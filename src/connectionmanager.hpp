@@ -2,7 +2,8 @@
 
 #include "init/macros.h"
 #include "init/pch.h"
-#include "socket.hpp"
+#include "init/net_errno.h"
+#include "init/socket.hpp"
 
 #ifndef MAX_CONNECTIONS
     #define MAX_CONNECTIONS 10
@@ -15,7 +16,7 @@
 #endif
 
 namespace net
-{
+{    
     struct API ConnectionList
     {
       public:
@@ -44,8 +45,6 @@ namespace net
         ConnectionManager(ConnectionManager const &);
         ConnectionManager &operator=(ConnectionManager const &);
         static ConnectionManager *m_pInstance;
-
-        int *net_err_code;
 
 #ifdef WIN32
         WSADATA wsaData;

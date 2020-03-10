@@ -1,8 +1,7 @@
 #include "connectionmanager.hpp"
-#include <iostream>
 
 namespace net
-{
+{    
     int ConnectionList::operator+=(Socket *s)
     {
         if (m_activeConns < MAX_CONNECTIONS)
@@ -22,7 +21,6 @@ namespace net
         }
         else
         {
-            // TODO: set net_errno
             return -1;
         }
     }

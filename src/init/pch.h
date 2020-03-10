@@ -11,3 +11,6 @@
     #include <sys/socket.h>
     #include <sys/types.h>
 #endif
+
+#include <cstring>
+#include <unistd.h>

@@ -53,7 +53,7 @@ endif()
 
 # Create variable for source files
 set(source_dir "${PROJECT_SOURCE_DIR}/src/")
-file(GLOB source_files "${source_dir}/*.cpp")
+file(GLOB source_files "${source_dir}/*.cpp" "${source_dir}/init/*.cpp")
 
 # Add executable to build
 add_library(${PROJECT_NAME} ${source_files})
