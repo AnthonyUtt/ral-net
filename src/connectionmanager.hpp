@@ -3,27 +3,25 @@
 #include "init/macros.h"
 #include "init/pch.h"
 #include "init/net_errno.h"
-#include "init/socket.hpp"
+#include "socket.hpp"
 
 #ifndef MAX_CONNECTIONS
     #define MAX_CONNECTIONS 10
 #endif
 
-#ifdef WIN32
-    #define CLOSE(...) CloseSocket(...)
-#else
-    #define CLOSE(...) close(...)
-#endif
-
 namespace net
-{    
+{
     struct API ConnectionList
     {
       public:
-        ConnectionList() {};
+        ConnectionList() {}
         int operator+=(Socket *s);
         int operator-=(Socket *s);
-        Socket* operator[](unsigned int i);
+        Socket *operator[](unsigned int i);
+        int find(Socket *s);
+        int count();
+
+        struct pollfd *pfds;
 
       private:
         ConnectionList(ConnectionList const &);
@@ -40,14 +38,14 @@ namespace net
 
         ConnectionList Connections;
 
+        int setPollFlags(Socket* s, short flags);
+        int PollConnections();
+
       private:
-        ConnectionManager() {};
+        ConnectionManager() { Connections.pfds = static_cast<struct pollfd*>(malloc(sizeof(struct pollfd*) * MAX_CONNECTIONS)); }
         ConnectionManager(ConnectionManager const &);
         ConnectionManager &operator=(ConnectionManager const &);
-        static ConnectionManager *m_pInstance;
 
-#ifdef WIN32
-        WSADATA wsaData;
-#endif
+        static ConnectionManager *m_pInstance;
     };
 }  // namespace net

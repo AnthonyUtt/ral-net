@@ -2,6 +2,5 @@
 
 #include "../src/init/net_errno.h"
 #include "../src/init/util.h"
-#include "../src/init/socket.hpp"
-#include "../src/streamsocket.hpp"
+#include "../src/socket.hpp"
 #include "../src/connectionmanager.hpp"

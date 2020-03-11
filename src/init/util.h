@@ -9,9 +9,9 @@ namespace net
     inline void *get_in_addr(struct sockaddr* sa)
     {
         if (sa->sa_family == AF_INET)
-            return &(((struct sockaddr_in*)sa)->sin_addr);
-        return &(((struct sockaddr_in6*)sa)->sin6_addr);
-    };
+            return &((reinterpret_cast<struct sockaddr_in*>(sa))->sin_addr);
+        return &((reinterpret_cast<struct sockaddr_in6*>(sa))->sin6_addr);
+    }
 
     template <typename T>
     struct Property
