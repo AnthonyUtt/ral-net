@@ -23,12 +23,16 @@ namespace net
         int Connect();
         int Connect(struct addrinfo *dest);
         int BeginListen();
-        Socket AcceptConnection(struct sockaddr_storage *remote_addr);
+        Socket *AcceptConnection(struct sockaddr_storage *remote_addr);
         int Send(const void *buf, ssize_t *len, int flags = 0);
         int Receive(void *buf, ssize_t *len, int flags = 0);
         int Close();
 
         Property<bool> Active;
+        Property<Socket*> Parent;
+        Collection<Socket*> Children;
+
+        int (*callback)(void *buf, ssize_t *len);
 
         int get_fd();
         const char *get_node();
@@ -37,6 +41,8 @@ namespace net
         int get_flags();
 
       private:
+        int ManageCallbacks;
+
         struct addrinfo *m_addr;
         int m_fd = -1;
         const char *m_node;

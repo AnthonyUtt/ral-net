@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12.4)
 
 # Set up project name and default settings
-project(ral-net VERSION 0.1)
+project(ral-net VERSION 1.0)
 include(cmake/DefaultProjectSettings.cmake)
 
 # "Library" for project options / C++ standard

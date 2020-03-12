@@ -26,6 +26,10 @@ namespace net
         m_port = port;
 
         m_flags = flags;
+
+        Children.Count = 0;
+        Children.Size = 10;
+        Children.m_list = static_cast<Socket**>(malloc(sizeof(Socket*) * Children.Size));
     }
 
     Socket::Socket(int fd)
@@ -139,7 +143,7 @@ namespace net
         return rv;
     }
 
-    Socket Socket::AcceptConnection(struct sockaddr_storage *remote_addr)
+    Socket *Socket::AcceptConnection(struct sockaddr_storage *remote_addr)
     {
         if (m_fd == -1)
         {
@@ -155,7 +159,7 @@ namespace net
             throw net_errno;
         }
 
-        return Socket(newfd);
+        return new Socket(newfd);
     }
 
     int Socket::Send(const void *buf, ssize_t *len, int flags)

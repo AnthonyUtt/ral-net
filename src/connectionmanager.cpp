@@ -127,17 +127,36 @@ namespace net
                 if (listener)
                 {
                     struct sockaddr_storage remoteAddr;
-                    Socket s = Connections[i]->AcceptConnection(&remoteAddr);
-                    Connections += &s;
-                    setPollFlags(&s, POLLIN);
+                    Socket *s = Connections[i]->AcceptConnection(&remoteAddr);
+                    Connections += s;
+                    setPollFlags(s, POLLIN);
+
+                    // Manage parent-child link
+                    Connections[i]->Children += s;
+                    s->Parent = Connections[i];
+
+                    // Parent callbacks are passed on to children
+                    s->callback = Connections[i]->callback;
                 }
                 else
                 {
-                    //TODO: Callback Functions?
-                    // Could probably implement them as basic
-                    // function pointers that have a set format
-                    // like return int (for errno) and takes
-                    // the buffer as an argument...
+                    // Callback function with data
+                    char buf[MAX_BUF_LEN];
+                    ssize_t bufLen = sizeof(buf);
+                    memset(buf, 0, bufLen);
+
+                    rv = Connections[i]->Receive(buf, &bufLen);
+                    if (rv == -1)
+                    {
+                        return -1;
+                    }
+
+                    rv = (*Connections[i]->callback)(buf, &bufLen);
+                    if (rv == -1)
+                    {
+                        net_errno = CALLBACK_FAILURE;
+                        return -1;
+                    }
                 }
             }
         }

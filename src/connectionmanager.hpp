@@ -9,6 +9,10 @@
     #define MAX_CONNECTIONS 10
 #endif
 
+#ifndef MAX_BUF_LEN
+    #define MAX_BUF_LEN 256
+#endif
+
 namespace net
 {
     struct API ConnectionList

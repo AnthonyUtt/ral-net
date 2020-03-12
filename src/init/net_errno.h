@@ -23,6 +23,7 @@
 #define INDEX_OUT_OF_BOUNDS 0x0013
 #define POLL_FAIL 0x0014
 #define GETSOCKOPT_FAIL 0x0015
+#define CALLBACK_FAILURE 0x0016
 
 namespace net
 {
